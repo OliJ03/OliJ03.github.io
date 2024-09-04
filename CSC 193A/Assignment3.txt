@@ -1,0 +1,25 @@
+Assignment 3
+141141 unread replies.158158 replies.
+In your own words, answer the following questions based off your reading from Week 2. Describe your reasoning based off the significance of the reading and your own inferences. Answer each question using one well-formed paragraph.
+
+Is there a thing such as using too much CSS? Is it bad style to use inline CSS?
+
+Would there ever be a need for multiple CSS files to be linked to a single HTML file?
+
+Do advanced websites also still use HTML, CSS and JavaScript? For example, the apple website. It isn't like any other website and has some fancy aspects to it.
+
+What are the limits of html? (Where does the language get more complex or difficult compared to other coding languages)
+
+Besides the discussion problems above, describe one unique perspective you gained from the reading on web technologies.
+
+
+
+1. It is possible to use too much CSS, but this is generally difficult to do unless it is a large project and requires lots of customization. It is generally bad to use inline CSS as it makes the html quite difficult to read if it is used a lot. A separate css file should be made in order to clean up the code and keep everything readable.
+
+2. Generally having multiple CSS files can make for a better readability experience, however, this can cause extra processing delays and it is generally not the preferred method. One CSS file is much better for processing, and generally does not become too cluttered for anyone reading it. 
+
+3. Yes, the combination of HTML, CSS, and JavaScript allows for a clean, structured, customized, and user-friendly website that many can enjoy. Apple's website is a great choice due to its unique layout and incredible visuals. 
+
+4. Html is largely a formatting language and doesn't possess any of the logic we are used to compared to using java. This makes html easy to learn, but difficult to choose how our format should be. It's also much harder to get confused because there are no complicated functions, methods, or other programming logic to remember. 
+
+5. One unique perspective I gained from reading was understanding how websites process their documents. It first begins with loading the html, parsing the html and loading it into the DOM tree. After parsing the html it loads the css and then parses the css and then attaches it into the DOM tree, which then displays the document onto the website. 

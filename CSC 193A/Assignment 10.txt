@@ -1,0 +1,28 @@
+In your Senior Project or any other website you created (could be something from this semester), 
+show an application of how to use local storage or cookies.  
+For example, saving a color scheme, or other basic cookies application.  
+Show a few lines of code which would make this happen.  Share here no more than 1-2 paragraphs
+
+
+
+While working on my personal website, I decided that I would like to add a background color changer. I implemented some local storage principles and came up with this: 
+
+document.addEventListener("DOMContentLoaded", function() {
+    loadBackgroundColor();
+    document.getElementById('colorID').addEventListener('input', onBackground);
+}
+);
+//checks if there is a stored backgroundvalue to display if not it displays the constant set value
+function loadBackgroundColor() {
+     if(localStorage.storedValue) {
+         const storedColor = localstorage.storedValue;
+         document.getElementById('colorID').value = storedColor;
+         document.body.style.backgroundColor = storedColor;
+      }
+}
+//changes the color to the desired color of the user 
+function onBackground() {
+    const backgroundColor = document.getElementById('colorID').value;
+    document.body.style.backgroundColor = backgroundColor;
+    localStorage.setItem('storedValue', backgroundColor);
+}
