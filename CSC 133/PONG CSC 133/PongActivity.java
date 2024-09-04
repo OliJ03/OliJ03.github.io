@@ -1,0 +1,43 @@
+package com.example.pongactivity;
+
+import android.app.Activity;
+import android.graphics.Point;
+import android.os.Bundle;
+import android.view.Display;
+
+public class PongActivity extends Activity {
+    private PongGame mPongGame;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        //This is used to initalize ball for the GameLogic class.
+        Ball ball = new Ball(size.x);
+        //This is used to pass the x and y parameters to the Game Logic class.
+        //x and y are the parameters that PongGame uses to create the ball and bat
+        GameLogic gameLogic = new GameLogic(size.x,size.y);
+
+        mPongGame = new PongGame(this, size.x, size.y, gameLogic, ball);
+        //gameLogic = new GameLogic(this, size.x, size.y);
+        setContentView(mPongGame);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // More code here later in the chapter
+        mPongGame.resume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // More code here later in the chapter
+        mPongGame.pause();
+    }
+}

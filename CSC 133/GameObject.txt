@@ -1,0 +1,62 @@
+package com.example.pongactivity;
+
+import android.graphics.RectF;
+
+abstract class GameObject {
+    protected RectF mRect;
+    protected float mXVelocity;
+    protected float mYVelocity;
+    protected float mBallWidth;
+    protected float mBallHeight;
+    protected float mBatMoving;
+    final int STOPPED = 0;
+    final int LEFT = 1;
+    final int RIGHT = 2;
+    protected float mXCoord;
+    protected float mYCoord;
+    protected float mBatSpeed;
+    protected int mScreenX;
+    protected int mScreenY;
+    protected float mLength;
+    public GameObject() {
+        mRect= new RectF();
+        mXVelocity = 0;
+        mYVelocity = 0;
+    }
+
+    public RectF getRect() {
+        return mRect;
+    }
+    public float getmXVelocity() {
+        return mXVelocity;
+    }
+    public float getmYVelocity() {
+        return mYVelocity;
+    }
+    public void setmXVelocity(float velocity) {
+        mXVelocity = velocity;
+    }
+    public void setmYVelocity(float velocity) {
+        mYVelocity = velocity;
+    }
+
+    public void update (long fps) {
+        // Move the ball based upon the
+        // horizontal (mXVelocity) and
+        // vertical(mYVelocity) speed
+        // and the current frame rate(mFPS)
+
+        // Move the top left corner
+        mRect.left = mRect.left + (mXVelocity / fps);
+        mRect.top = mRect.top + (mYVelocity / fps);
+
+        // Match up the bottom right corner
+        // based on the size of the ball
+        mRect.right = mRect.left + mBallWidth;
+        mRect.bottom = mRect.top + mBallHeight;
+        
+    }
+
+
+
+}
