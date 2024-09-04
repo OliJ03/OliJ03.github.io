@@ -1,0 +1,100 @@
+DROP TABLE jezil_patient_disease; 
+DROP TABLE jezil_patient;
+DROP TABLE jezil_disease; 
+CREATE TABLE jezil_patient 
+( 
+  ssn   CHAR(11) PRIMARY KEY, 
+  salary NUMBER, 
+  lname VARCHAR(20), 
+  fname VARCHAR(20), 
+  age   NUMBER, 
+  state VARCHAR(20),
+  dob   DATE
+); 
+
+ 
+CREATE TABLE jezil_disease
+( 
+  disease_code  VARCHAR(10) PRIMARY KEY, 
+  disease_description VARCHAR(20)
+); 
+
+CREATE TABLE jezil_patient_disease
+( 
+  disease_code  VARCHAR(10) NOT NULL, 
+  CONSTRAINT dc_fk FOREIGN KEY (disease_code) REFERENCES jezil_disease(disease_code),
+  ssn   CHAR(11) NOT NULL,
+  CONSTRAINT ssn_fk FOREIGN KEY (ssn) REFERENCES jezil_patient(ssn)
+);
+
+
+INSERT INTO jezil_patient VALUES ('123-45-6789', 15000, 'Smith', 'John', 25, 'CA', '12,MAR,1998');
+INSERT INTO jezil_patient VALUES ('123-45-6788', 27000, 'Bob', 'Smith', 16, 'NY', '25,JAN,2007');
+INSERT INTO jezil_patient VALUES ('123-45-6787', 39000, 'Billy', 'Jo', 20, 'AR', '22,AUG,2003');
+INSERT INTO jezil_patient VALUES ('123-45-6786', 65000, 'John', 'Apple', 35, 'CA', '15,MAY,1988');
+INSERT INTO jezil_patient VALUES ('123-45-6785', 89000, 'Adam', 'Joe', 24, 'PA', '17,APR,1999');
+INSERT INTO jezil_patient VALUES ('123-45-6784', 0, 'Joe', 'Bill', 123, 'PA', '17,APR,1900');
+INSERT INTO jezil_patient VALUES ('123-45-6783', 60000, 'Jogby', 'Jill', 113, 'PA', '17,APR,1910');
+
+INSERT INTO jezil_disease VALUES ('1','Malaria'); 
+INSERT INTO jezil_disease VALUES ('2','Covid'); 
+INSERT INTO jezil_disease VALUES ('3','Flu'); 
+
+INSERT INTO jezil_patient_disease VALUES ('1', '123-45-6789');
+INSERT INTO jezil_patient_disease VALUES ('2', '123-45-6788');
+INSERT INTO jezil_patient_disease VALUES ('3', '123-45-6787');
+INSERT INTO jezil_patient_disease VALUES ('2', '123-45-6786');
+INSERT INTO jezil_patient_disease VALUES ('1', '123-45-6785');
+INSERT INTO jezil_patient_disease VALUES ('1', '123-45-6784');
+INSERT INTO jezil_patient_disease VALUES ('3', '123-45-6783');
+INSERT INTO jezil_patient_disease VALUES ('2', '123-45-6783');
+INSERT INTO jezil_patient_disease VALUES ('1', '123-45-6783');
+
+
+SELECT ssn ||', '|| SQRT(age) AS "Patient Info" FROM jezil_patient WHERE age > 20; 
+  
+SELECT ssn, Age, (SELECT AVG(Age) FROM jezil_patient)FROM jezil_patient WHERE Age > (SELECT AVG(Age) FROM jezil_patient) AND SSN IN ( 
+  SELECt ssn FROM jezil_patient_disease WHERe disease_code LIKE '1');
+  
+  SELECT ssn, age FROM jezil_patient WHERE age > 95 and SSN IN ( 
+    SELECT ssn from jezil_patient_disease WHERE disease_code LIKE '2'); 
+    
+SELECT disease_description FROM jezil_disease WHERE disease_code IN ( 
+  SELECT disease_code FROM jezil_patient_disease WHERE ssn IN (
+    SELECT ssn FROM jezil_patient WHERE salary < 50000));
+    
+SELECT ssn, disease_code FROM jezil_patient_disease WHERE disease_code = '3' AND SSN IN ( 
+  SELECT SSN FROM jezil_patient WHERE UPPER(lname) LIKE 'B%' OR  UPPER(LNAME) LIKE '__G');
+  
+SELECT ssn, disease_code FROM jezil_patient_disease WHERE disease_code = '3' AND SSN IN ( 
+  SELECT SSN FROM jezil_patient WHERE UPPER(lname) NOT IN ('B%',  '__G'));
+  
+SELECT ssn, NVL(salary,0), (SELECT (AVG(salary)+min(salary)) FROM jezil_patient)FROM jezil_patient WHERE salary < (SELECT (AVG(salary)+min(salary)) FROM jezil_patient) AND SSN IN ( 
+  SELECt ssn FROM jezil_patient_disease WHERe disease_code LIKE '1');
+  
+SELECT ssn, fname, lname, TO_CHAR(dob, 'MM/YY/DD'), ((salary+5)/3)*((salary+5)/3) AS "salary math" FROM jezil_patient ORDER BY lname DESC, "salary math" ASC;
+
+CREATE TABLE jezil_patient2 AS SELECT * FROM jezil_patient WHERE ssn IN(
+  SELECT ssn FROM jezil_patient_disease WHERE disease_code LIKE '1');
+  
+INSERT INTO jezil_patient2 (ssn, salary, lname, fname, age, state, dob) SELECT DISTINCT * FROM jezil_patient WHERE salary > (SELECT min(salary) FROM jezil_patient);
+
+UPDATE jezil_patient2 SET fname = lname, lname = fname WHERE ssn in ( 
+  SELECT ssn FROM jezil_patient WHERE SSN IN ( 
+    SELECT ssn FROM jezil_patient_disease WHERE disease_code = '2'));
+
+SELECT * FROM jezil_patient2;
+
+DROP TABLE jezil_patient2;
+
+SELECT ssn, COUNT(disease_code) FROM jezil_patient_disease GROUP BY  ssn HAVING COUNT(disease_code)< 2;
+
+SELECT COUNT(ssn), disease_code FROM jezil_patient_disease GROUP BY disease_code HAVING COUNT (ssn) >1;
+
+SELECT state, sum(salary) FROM jezil_patient WHERE age > 20 GROUP BY state ORDER BY sum(salary) DESC;
+
+SELECT DECODE(sign(salary-50000),0,'Ok', 1, 'Rich', -1, 'Poor') FROM jezil_patient;
+
+
+SELECT ssn, Age, (SELECT COUNT(disease_code) FROM jezil_patient_disease)FROM jezil_patient WHERE SSN IN ( 
+  SELECt ssn FROM jezil_patient_disease GROUP BY ssn HAVING COUNT(disease_code) > 2);

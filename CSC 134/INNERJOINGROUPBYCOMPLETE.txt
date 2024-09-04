@@ -1,0 +1,10 @@
+SELECT * FROM jezil_party, jezil_candidate; 
+
+SELECT lname, partydesc FROM jezil_party, jezil_candidate WHERE jezil_party.partyid=jezil_candidate.partyid; 
+
+SELECT lname, NVL(partydesc,'no description') FROM jezil_party, jezil_candidate WHERE jezil_party.partyid=jezil_candidate.partyid OR jezil_party.partyid IS NULL; 
+
+SELECT partydesc, COUNT(*) FROM jezil_party, jezil_candidate WHERE jezil_party.partyid=jezil_candidate.partyid GROUP BY partydesc HAVING COUNT(*)>0;
+  
+SELECT partydesc, COUNT(*) people, AVG(NVL(salary,0)) avgsalary FROM jezil_party, jezil_candidate WHERE  jezil_party.partyid=jezil_candidate.partyid GROUP BY partydesc HAVING avg(salary)> 50000 AND COUNT(*) > 0;  
+  

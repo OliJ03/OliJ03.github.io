@@ -1,0 +1,55 @@
+CREATE TABLE jezil_student
+(
+  SSN           VARCHAR(9) PRIMARY KEY,
+  lname         VARCHAR(20),
+  fname         VARCHAR(20),
+  age           NUMBER,
+  salary        NUMBER,
+  DOB           NUMBER
+);
+
+ALTER TABLE jezil_student ADD UNIQUE (fname,lname);
+
+ALTER TABLE jezil_student ADD CONSTRAINT jezil_student_age_ck CHECK(age BETWEEN 10 and 50);
+
+ALTER TABLE jezil_student add address VARCHAR(25);
+
+
+ALTER TABLE jezil_student MODIFY DOB DATE NOT NULL;
+
+CREATE INDEX SSN_DOB ON jezil_student (SSN,DOB);
+
+ALTER TABLE jezil_student ADD transferable CHAR(1) NOT NULL;
+
+ALTER TABLE jezil_student ADD CONSTRAINT jezil_student_transferable_ck CHECK(transferable in('y','Y','n','N'));
+
+ALTER TABLE jezil_student DROP (age);
+
+
+
+
+2.)
+CREATE TABLE jezil_class
+(
+  class_code          NUMBER,
+  class_description   VARCHAR(20) UNIQUE NOT NULL
+);
+
+ALTER TABLE jezil_class MODIFY class_code CONSTRAINT jezil_class_class_code_pk PRIMARY KEY;
+
+CREATE INDEX class_description ON jezil_class(class_description);
+
+
+3.)
+CREATE TABLE jezil_student_class
+(
+  SSN             VARCHAR(9), 
+  class_code      NUMBER 
+);
+
+ALTER TABLE jezil_student_class ADD CONSTRAINT jezil_student_class_pk PRIMARY KEY(SSN,class_code);
+
+ALTER TABLE jezil_student_class ADD CONSTRAINT jezil_student_class_SSN_fk FOREIGN KEY (SSN) REFERENCES jezil_student;
+ALTER TABLE jezil_student_class ADD CONSTRAINT jezil_student_class_class_code_fk FOREIGN KEY (class_code) REFERENCES jezil_class;
+
+

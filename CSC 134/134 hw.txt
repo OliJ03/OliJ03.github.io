@@ -1,0 +1,17 @@
+SELECT s.ssn, s.fname, NVL(c.class_description, 'No description is available yet') FROM jezil_class c, jezil_student s, jezil_student_class sc
+WHERE c.class_code = sc.class_code AND s.ssn = sc.ssn;
+
+SELECT s.lname, c.class_code FROM jezil_student s, jezil_class c, jezil_student_class sc WHERE c.class_code = sc.class_code AND s.ssn = sc.ssn AND c.class_description = 'Introduction to C programming';
+
+SELECT c.class_code, NVL(c.class_description, 'Other Classes'), COUNT(*) as students FROM jezil_class c, jezil_student_class sc, jezil_student s 
+WHERE c.class_code = sc.class_code 
+AND s.ssn = sc.ssn 
+AND TRUNC(months_between(sysdate,dob)/12) > (SELECT avg(TRUNC(months_between(sysdate,dob)/12)) FROM jezil_student) 
+GROUP BY c.class_code, c.class_description HAVING COUNT(*) > 1 ORDER BY students; 
+
+
+SELECT *FROM jezil_student_class;
+
+SELECT class_code FROM jezil_class WHERE class_code NOT IN (SELECT class_code FROM jezil_student_class);
+
+SELECT fname, lname, ssn FROM jezil_student s WHERE NOT EXISTS (SELECT ssn FROM jezil_student_class sc WHERE s.ssn = sc.ssn );

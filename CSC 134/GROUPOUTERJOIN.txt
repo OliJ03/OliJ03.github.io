@@ -1,0 +1,3 @@
+SELECT lname, NVL(partydesc,'no party') FROM  jezil_candidate left outer join jezil_party on jezil_candidate.partyid = jezil_party.partyid;
+
+SELECT lname, NVL(partydesc,'no one') FROM  jezil_candidate right outer join jezil_party on jezil_candidate.partyid = jezil_party.partyid;

@@ -1,0 +1,21 @@
+SELECT fname, salary, 'HONEST' FROM jezil_candidate WHERE salary <50000 
+UNION 
+SELECT fname, salary, 'Not so Honest' FROM jezil_candidate WHERE salary BETWEEN 50000 AND 100000
+UNION 
+SELECT fname, salary, '80000' FROM jezil_candidate WHERE salary >100000;
+  
+  
+SELECT fname, CASE WHEN salary <50000 THEN 'Honest' 
+                   WHEN salary BETWEEN 50000 and 100000 THEN 'Not so honest' 
+                   WHEN salary >100000 THEN '800000'
+                   ELSE '0'
+              END
+              FROM jezil_candidate; 
+  
+  SELECT fname,lname  FROM jezil_candidate WHERE NVL(partyid, 0) NOT IN (SELECT partyid FROM jezil_party); 
+  
+    SELECT fname,lname FROM jezil_candidate  WHERE NOT EXISTS (SELECT partyid FROM jezil_party WHERE jezil_candidate.partyid=jezil_party.partyid and jezil_candidate.partyid IS NOT NULL); 
+    
+ SELECT fname,lname  FROM jezil_candidate 
+ MINUS
+ SELECT fname,lname  FROM jezil_candidate where partyid IS NOT NULL;

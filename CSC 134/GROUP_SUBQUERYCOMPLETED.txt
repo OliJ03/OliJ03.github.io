@@ -1,0 +1,17 @@
+SELECT INITCAP(fname) FROM jezil_candidate WHERE partyid=(
+  SELECT partyid FROM jezil_party WHERE partydesc=(
+    'Democrat'));
+    
+SELECT partydesc FROM jezil_party WHERE partyid IN(
+  SELECT partyid FROM jezil_candidate WHERE UPPER(lname)
+     LIKE '%C');
+    
+SELECT INITCAP(fname) FROM jezil_candidate WHERE partyid IN(
+  SELECT partyid FROM jezil_party WHERE  partydesc = 'Democrat' OR partydesc = 'Republican' );
+     
+DROP TABLE jezil2candidate;     
+
+SELECT * FROM jezil2candidate;
+     
+CREATE TABLE jezil2candidate AS SELECT fname, lname, CASE WHEN partyid = 2 THEN salary*.9 ELSE salary END AS salary FROM jezil_candidate; 
+CREATE TABLE jezil2candidate AS SELECT fname, lname, salary FROM jezil_candidate;

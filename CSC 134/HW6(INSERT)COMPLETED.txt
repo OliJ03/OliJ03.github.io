@@ -1,0 +1,76 @@
+DROP TABLE jezil_student;
+DROP TABLE jezil_class;
+DROP TABLE jezil_student_class;
+
+
+CREATE TABLE jezil_student
+(
+  SSN           VARCHAR(9) CONSTRAINT jezil_student_SSN_pk PRIMARY KEY,
+  lname         VARCHAR(20),
+  fname         VARCHAR(20),
+  age           NUMBER,
+  salary        NUMBER CONSTRAINT jezil_student_salary_ck CHECK (salary>10000),
+  DOB           DATE,
+  CONSTRAINT jezil_student_fname_lname_uk UNIQUE (fname, lname)
+);
+
+CREATE TABLE jezil_class
+(
+  class_code          NUMBER CONSTRAINT jezil_class_class_code_pk PRIMARY KEY,
+  class_description   VARCHAR(20) 
+);
+CREATE INDEX jezil_class_idx ON jezil_class (class_description);
+
+CREATE TABLE jezil_student_class
+(
+  SSN             VARCHAR(9), 
+  class_code      NUMBER,
+  CONSTRAINT jezil_student_class_SSN_fk FOREIGN KEY (SSN) REFERENCES jezil_student,
+  CONSTRAINT jezil_student_class_class_code_fk FOREIGN KEY (class_code) REFERENCES jezil_class,
+  CONSTRAINT jezil_student_SSN_class_code_pk PRIMARY KEY (SSN,class_code)
+);
+
+INSERT INTO jezil_class VALUES (1,'Math');
+INSERT INTO jezil_class VALUES (2,'Art');
+
+INSERT INTO jezil_student VALUES (123456789,'Smith','John', 21,11000, TO_DATE('01/21/MAY', 'yy/dd/mm'));
+INSERT INTO jezil_student VALUES (234567890,'Jill','Bill', 21,11000,'21/MAY/2001');
+
+INSERT INTO jezil_student_class VALUES (123456789,1);
+INSERT INTO jezil_student_class VALUES (234567890,2);
+INSERT INTO jezil_student_class VALUES (123456789,2);
+
+INSERT INTO jezil_student VALUES (123456789,'Billy','Schmoe',21,15000,'21/MAY/2001');
+
+INSERT INTO jezil_student VALUES (234567891,'Smith','John',21,15000,'21/MAY/2001');
+
+INSERT INTO jezil_student VALUES (234567891,'Joe','Johnny',21,5000,'21/MAY/2001');
+
+INSERT INTO jezil_student_class VALUES (123456789,2);
+
+INSERT INTO jezil_student_class VALUES (123456789,1);
+
+INSERT INTO jezil_student_class VALUES (123456789,2);
+
+INSERT INTO jezil_student_class VALUES (634567890,2);
+SELECT constraint_name, r_constraint_name, constraint_type FROM user_constraints WHERE table_name='JEZIL_STUDENT';
+SELECT constraint_name, r_constraint_name, constraint_type FROM user_constraints WHERE table_name='JEZIL_CLASS';
+SELECT constraint_name, r_constraint_name, constraint_type, status FROM user_constraints WHERE table_name='JEZIL_STUDENT_CLASS';
+
+ALTER TABLE jezil_student_class DISABLE CONSTRAINT jezil_student_class_SSN_fk;
+ALTER TABLE jezil_student_class ENABLE CONSTRAINT jezil_student_class_SSN_fk;
+
+INSERT INTO jezil_student_class VALUES (123236789,2);
+
+ALTER TABLE jezil_student_class ENABLE CONSTRAINT jezil_student_class_SSN_fk;
+
+DELETE FROM jezil_student_class;
+
+TRUNCATE TABLE jezil_student;
+
+DROP INDEX jezil_class_idx;
+
+ALTER TABLE jezil_student_class DROP CONSTRAINT jezil_student_class_SSN_fk;
+ALTER TABLE jezil_student_class DROP CONSTRAINT jezil_student_class_class_code_fk;
+
+DROP TABLE jezil_student;

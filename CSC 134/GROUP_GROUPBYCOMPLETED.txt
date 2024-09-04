@@ -1,0 +1,12 @@
+SELECT partyid, COUNT(*) AS "Total in party" FROM jezil_candidate GROUP BY partyid; 
+
+SELECT partyid, COUNT(*) AS "Total in party" FROM jezil_candidate WHERE INITCAP(fname) LIKE 'D%' OR INITCAP(fname) LIKE 'R%' GROUP BY partyid; 
+
+SELECT partyid,avg(salary), COUNT(*) AS "Total in party" FROM jezil_candidate GROUP BY partyid; 
+
+SELECT partyid, COUNT(*) AS "Total in party" FROM jezil_candidate GROUP BY partyid HAVING COUNT(*) <3; 
+
+SELECT partyid,avg(salary), COUNT(*) AS "Total in party" FROM jezil_candidate GROUP BY partyid HAVING avg(salary) <50001; 
+
+
+CREATE TABLE jezilcandidate2 AS SELECT partyid, COUNT(*) AS "Total number of people in party" FROM jezil_candidate GROUP BY partyid; 

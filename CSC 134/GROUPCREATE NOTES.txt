@@ -1,0 +1,43 @@
+
+DROP TABLE jezil_candidate;
+DROP TABLE jezil_party;
+
+1.) 
+CREATE TABLE jezil_candidate
+(
+  First_Name     VARCHAR2(20),
+  Last_Name      VARCHAR2(30),
+  DOB            DATE,
+  SALARY         NUMBER
+);
+  
+CREATE TABLE jezil_party
+(
+  PartyDesc    VARCHAR2(20)
+);
+
+2.)
+ALTER TABLE jezil_candidate DROP (DOB);
+DESC jezil_candidate;
+
+3.)
+ALTER TABLE jezil_candidate ADD DOB DATE;
+DESC jezil_candidate;
+
+4.)
+ALTER TABLE jezil_candidate ADD candidate_id NUMBER;
+ALTER TABLE jezil_candidate ADD PRIMARY KEY (candidate_id);
+ALTER TABLE jezil_party ADD party_id NUMBER;
+ALTER TABLE jezil_party ADD PRIMARY KEY (party_id);
+
+5.)
+ALTER TABLE jezil_candidate ADD candidate_id NUMBER;
+ALTER TABLE jezil_candidate add PRIMARY KEY (candidate_id,First_Name);
+
+6.)
+DROP TABLE jezil_party; 
+CREATE TABLE jezil_party
+(
+  PartyDesc    VARCHAR2(20),
+  party_id     NUMBER CONSTRAINT party_id_pk PRIMARY KEY
+);

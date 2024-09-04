@@ -1,0 +1,38 @@
+DROP TABLE jezil_candidate;
+CREATE TABLE jezil_candidate
+( 
+  Candidate_id          NUMBER CONSTRAINT jezil_candidate_candidate_id_pk PRIMARY KEY, 
+  First_name            VARCHAR(20), 
+  Last_name             VARCHAR(20), 
+  DOB                   DATE, 
+  Salary                NUMBER CONSTRAINT jezil_candidate_salary_ck CHECK (Salary>10000 and Salary<50000), 
+  Party_id              NUMBER CONSTRAINT jezil_party_party_id_fk REFERENCES jezil_party (Party_id),
+  CONSTRAINT candidate_fname_lname_uk UNIQUE (First_name, Last_name)
+);
+
+DROP TABLE jezil_party;
+CREATE TABLE jezil_party
+(
+  Party_id        NUMBER CONSTRAINT jezil_party_party_id_pk PRIMARY KEY, 
+  PartyDesc       VARCHAR(20)CONSTRAINT jezil_party_party_desc_uk UNIQUE
+);
+
+
+INSERT INTO jezil_party VALUES (1,'Democrat');
+INSERT INTO jezil_party VALUES (2,'Republican');
+INSERT INTO jezil_candidate VALUES (1,'John','Smith','20/MAR/1956',25000,1);
+INSERT INTO jezil_candidate VALUES (2,'Smith','John','21/APR/1958',26000,2);
+
+INSERT INTO jezil_candidate VALUES (3,'Joe','Robinson',TO_DATE('MAR/25/1956', 'MM/DD/YYYY'),25000,1);
+INSERT INTO jezil_candidate VALUES (4,'Robby','Smithinson',TO_DATE('21/1958/APR', 'DD/YYYY/MM'),26000,2);
+
+SELECT TO_CHAR (DOB, 'MM/DD/YYYY') FROM jezil_candidate;
+
+SELECT TO_CHAR (DOB, 'DD/YYYY/MM hh12:mi:ss') FROM jezil_candidate;
+
+INSERT INTO jezil_candidate VALUES (5,'Rob','Robinson',TO_DATE('MAR/25/1956', 'MM/DD/YYYY'),60000,1);
+
+INSERT INTO jezil_party VALUES (3,'Republican');
+
+SELECT constraint_name, r_constraint_name, constraint_type FROM user_constraints WHERE table_name='JEZIL_CANDIDATE';
+SELECT constraint_name, r_constraint_name, constraint_type FROM user_constraints WHERE table_name='JEZIL_PARTY';

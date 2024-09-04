@@ -1,0 +1,65 @@
+drop sequence salary;
+drop table jezil_candidate;
+drop table jezil_party;
+Create sequence salary start with 20000 increment by 10000;
+create table jezil_party
+(
+partyid number primary key,
+partydesc varchar2(20)
+);
+insert into jezil_party
+values(1,'Democrat');
+insert into jezil_party
+values(2,'Republican');
+insert into jezil_party
+values(3,'Independent');
+insert into jezil_party
+values(4,'');
+create table jezil_candidate
+(
+lname varchar(40) not null,
+fname varchar(20) not null,
+address varchar(20),
+salary number,
+dob date,
+partyid number references jezil_party
+);
+insert into jezil_candidate
+values('jennet', 'abraham', 'Berkeley, CA.', salary.nextval, '01 feb
+1960',1);
+insert into jezil_candidate
+values ( 'Green', 'abraham', 'Oakland, CA.',salary.nextval, '01 feb
+1964',1 );
+insert into jezil_candidate
+values('gren', 'cheryl','Berkeley, CA.',null,'01 feb 1968',2 );
+insert into jezil_candidate
+values('greeenr', 'albert', 'Salt Lake City, UT', salary.nextval, '01 feb
+1970',2);
+insert into jezil_candidate
+values('gran', 'anne', 'Salt Lake City, UT', salary.nextval, '01 feb
+1961',3 );
+insert into jezil_candidate
+values('mama', 'mia', 'pepper City, UT', salary.nextval, '01 feb
+1968',null );
+commit;
+
+
+SELECT INITCAP(fname)||','||INITCAP(lname)||','|| dob AS "full information" FROM jezil_candidate;
+
+SELECT INITCAP(fname)||','||INITCAP(lname)||','|| TRUNC(months_between(sysdate,dob)/12) FROM jezil_candidate;
+
+SELECT UNIQUE INITCAP(lname) FROM jezil_candidate;
+
+SELECT INITCAP(fname)||','||CASE WHEN TRUNC(months_between(sysdate,dob)/12) > 40 THEN 'greater then 40' END FROM jezil_candidate;
+
+SELECT fname FROM jezil_candidate WHERE salary BETWEEN 20000 AND 40000 OR salary = NULL;
+
+SELECT INITCAP(fname) FROM jezil_candidate WHERE TRUNC(months_between(sysdate,dob)/12) > 40 AND INITCAP(fname) LIKE 'C%';
+
+
+SELECT INITCAP(lname),INITCAP(fname), salary FROM jezil_candidate ORDER BY lname;
+
+SELECT INITCAP(lname),INITCAP(fname), salary FROM jezil_candidate ORDER BY 1 DESC, 2;
+
+
+SELECT INITCAP(lname),INITCAP(fname), NVL(salary * 2, 0) double_salary FROM jezil_candidate ORDER BY double_salary DESC;

@@ -1,0 +1,19 @@
+SELECT fname, lname, dob, salary FROM jezil1_student WHERE TRUNC(months_between(sysdate,dob)/12) > 15; 
+
+SELECT ssn||', '|| LOWER(lname)||', '|| UPPER(fname) AS "FULL_NAME" FROM jezil_student;
+
+SELECT fname, lname, dob, salary FROM jezil1_student WHERE LOWER(lname) LIKE '%h%' OR LOWER(lname) LIKE'%a%';
+
+SELECT fname, lname,NVL(TO_CHAR(dob),'not born yet'), salary FROM jezil1_student WHERE TRUNC(months_between(sysdate,dob)/12) BETWEEN 15 AND 25 AND LOWER(fname) LIKE 'abr%'; 
+
+SELECT fname, lname, dob, salary, DECODE(SIGN(salary-20000),-1,'poor',1,'rich',0,'right on the money') FROM jezil1_student WHERE dob IS NOT NULL;
+
+SELECT (SQRT(months_between(sysdate,dob)/12)+20)/5 FROM jezil1_student; 
+
+SELECT fname, lname, dob, salary FROM jezil1_student WHERE INITCAP(fname) NOT IN ('JOHN', 'Jack','Bob'); 
+
+SELECT fname, lname, dob, salary FROM jezil1_student WHERE fname = '__b' AND salary > 10000 AND phone = '527%';
+
+CREATE TABLE jezil2_student2 AS SELECT fname, lname, salary*2 AS double_salary FROM jezil1_student WHERE LOWER(lname) LIKE '%nn%' AND dob IS NULL;
+
+select * FROM jezil2_student2;

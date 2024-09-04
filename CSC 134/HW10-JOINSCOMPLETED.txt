@@ -1,0 +1,51 @@
+SELECT s.ssn, s.fname, NVL(c.class_description, 'No description is available yet') FROM jezil_class c, jezil_student s, jezil_student_class sc
+WHERE c.class_code = sc.class_code AND s.ssn = sc.ssn;
+
+SELECT s.lname, c.class_code FROM jezil_student s, jezil_class c, jezil_student_class sc WHERE c.class_code = sc.class_code AND s.ssn = sc.ssn AND c.class_description = 'Introduction to C programming';
+
+SELECT c.class_code, NVL(c.class_description, 'Other Classes'), COUNT(*) as students FROM jezil_class c, jezil_student_class sc, jezil_student s 
+WHERE c.class_code = sc.class_code 
+AND s.ssn = sc.ssn 
+AND TRUNC(months_between(sysdate,dob)/12) > (SELECT avg(TRUNC(months_between(sysdate,dob)/12)) FROM jezil_student) 
+GROUP BY c.class_code, c.class_description HAVING COUNT(*) > 1 ORDER BY students; 
+
+
+SELECT *FROM jezil_student_class;
+
+SELECT class_code FROM jezil_class WHERE class_code NOT IN (SELECT class_code FROM jezil_student_class);
+
+SELECT fname, lname, ssn FROM jezil_student s WHERE NOT EXISTS (SELECT ssn FROM jezil_student_class sc WHERE s.ssn = sc.ssn );
+
+CREATE TABLE jezil_table AS SELECT fname, lname, NVL(class_description, 'No description') "Class Description" FROM jezil_class c, jezil_student s, jezil_student_class sc
+WHERE c.class_code = sc.class_code AND s.ssn = sc.ssn 
+UNION 
+(SELECT fname, lname, 'No Classes' FROM (SELECT ssn from jezil_student MINUS SELECT ssn FROM jezil_student_class ) natural join jezil_student );
+
+CREATE TABLE jezil_table AS SELECT fname, lname, NVL(class_description, 'No description') "Class Description" FROM jezil_class c, jezil_student s, jezil_student_class sc
+WHERE c.class_code = sc.class_code AND s.ssn = sc.ssn 
+UNION 
+(SELECT fname, lname, 'No Classes' FROM (SELECT ssn from jezil_student WHERE NOT EXISTS (SELECT ssn FROM jezil_student_class  WHERE jezil_student.ssn = jezil_student_class.ssn ))natural join jezil_student);
+
+SELECT * FROM jezil_table;
+
+DROP TABLE jezil_table;
+
+create view simple AS  SELECT fname, lname, NVL(class_description, 'Courses') "Courses"
+FROM jezil_student s, jezil_class c, jezil_student_class sc 
+WHERE c.class_code = sc.class_code AND s.ssn = sc.ssn AND TRUNC(months_between(sysdate,dob)/12) > (SELECT avg(TRUNC(months_between(sysdate,dob)/12)) FROM jezil_student);
+
+SELECT * FROM simple;
+
+SELECT lname, class_description FROM jezil_student, jezil_class MINUS SELECT lname, class_description FROM jezil_class c, jezil_student s, jezil_student_class sc
+WHERE c.class_code = sc.class_code AND s.ssn = sc.ssn;
+
+SELECT constraint_name, column_name from user_constraints natural join user_cons_columns where table_name ='JEZIL_STUDENT' and constraint_type ='P';
+SELECT constraint_name, column_name from user_constraints natural join user_cons_columns where table_name ='JEZIL_STUDENT' and constraint_type ='U';
+
+SELECT constraint_name, r_constraint_name, column_name from user_constraints natural join user_cons_columns where table_name ='JEZIL_STUDENT_CLASS' and constraint_type ='R';
+
+SELECT constraint_name, column_name from user_constraints natural join user_cons_columns where table_name ='JEZIL_STUDENT' and constraint_type ='C';
+
+
+
+
