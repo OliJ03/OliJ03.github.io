@@ -1,0 +1,33 @@
+- Arduino R3 Starter Kit 
+- MPX5700AP 
+    - Up to 102 psi reading with 2.5% margin of error
+    - Find manufacturer transfer equation in the code or the manufacturer datasheet to read pressure values from sensor
+    - Pin 1: Vout(data out), Pin 2: Ground, Pin 3: Vin(voltage in)
+- BMP 180 barometric pressure sensor
+    - Measures outside air pressure to subtract from the MPX5700AP to receive true boost pressure inside the intake manifold of the car 
+    - BMP code library for easy pressure, temperature, and altitude readings. 
+    - Follows I2C protocol for connection to Arduino
+- Your choice of OLED screen 
+    - better readability inside of the car 
+    - similar code development to LCD display 
+    - Follows I2C protocol for connection to Arduino
+- 6 feet 1/8" - 5/32" rubber hose to connect to intake manifold port 
+- Soldering iron, flux, solder, and helping hands if solo
+
+Some Extra instructions
+- Heat up soldering iron and tap into Intake Manifold port 
+    -1/2" rubber pipe will fit over manifold port. 
+    - Find 1/2" to 1/8" reducer and connect all hoses together. 
+- Under the dash and to the left of the steering column you will find a rubber grommet that leads behind the battery 
+    - Remove the battery, pop out the grommet and run the 1/8" rubber hose through the firewall and up to the battery 
+    - Attach hose to reducer and clamp each connection down so no boost leak occurs 
+- Testing the gauge 
+    - Before tapping power from the fuse box, test with the 12V power adapter from the car if the boost gauge works properly on a short drive. 
+    - If it works proceed to the next step by tapping power from the fuse box 
+- Tapping power from fuse box for only when the car is on. 
+    - Find a fusebox diagram online for your car and identify which fuses are not being used. 
+    - Tap into that fuse by adding an extension and adapting your arduino cylindrical power strip to it. 
+    - When the car key is turned on the arduino should power on, but when the car has no power, all accessories should be off. 
+- Lastly, package the arduino and gauges as needed
+
+
